@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #fff8f0;
+  color: #5a4632;
+  font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 手绘感虚线分隔 */
+.dashed {
+  border: 2px dashed #f0c9a8;
+}
+
+/* 隐藏滚动条但保留滚动（分类横滑等） */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 底部安全区适配 */
+.pb-safe {
+  padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem);
+}

@@ -1,0 +1,48 @@
+export interface Category {
+  id: string
+  name: string
+  icon: string
+  sort: number
+  created_at?: string
+}
+
+export interface Dish {
+  id: string
+  category_id: string
+  name: string
+  description: string
+  price: number
+  tags: string[]
+  image_url: string
+  status: 'on' | 'off'
+  sort: number
+  created_at?: string
+}
+
+export type OrderStatus = 'pending' | 'preparing' | 'done' | 'cancelled'
+
+export interface OrderItem {
+  dish_id: string
+  name: string
+  qty: number
+  note?: string
+}
+
+export interface Order {
+  id: string
+  order_no: string
+  items: OrderItem[]
+  status: OrderStatus
+  table_no: string
+  note: string
+  total: number
+  created_at: string
+  updated_at: string
+}
+
+export const STATUS_LABEL: Record<OrderStatus, string> = {
+  pending: '待制作',
+  preparing: '制作中',
+  done: '已完成',
+  cancelled: '已取消',
+}

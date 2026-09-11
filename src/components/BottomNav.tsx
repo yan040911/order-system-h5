@@ -1,0 +1,27 @@
+import { NavLink } from 'react-router-dom'
+
+function item(to: string, icon: string, label: string) {
+  return (
+    <NavLink
+      to={to}
+      className={({ isActive }) =>
+        `flex flex-1 flex-col items-center py-2 text-xs ${
+          isActive ? 'text-accent' : 'text-muted'
+        }`
+      }
+    >
+      <span className="text-xl">{icon}</span>
+      {label}
+    </NavLink>
+  )
+}
+
+export default function BottomNav() {
+  return (
+    <nav className="sticky bottom-0 z-10 mt-auto flex border-t border-warm bg-white/90 backdrop-blur">
+      {item('/', '🍽️', '点餐')}
+      {item('/orders', '📋', '我的订单')}
+      {item('/admin', '⚙️', '管理')}
+    </nav>
+  )
+}
