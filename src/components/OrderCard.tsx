@@ -13,11 +13,13 @@ export default function OrderCard({
   onUpdate,
   customer,
   onShare,
+  onDelete,
 }: {
   order: Order
   onUpdate?: (id: string, status: OrderStatus) => void
   customer?: boolean
   onShare?: (order: Order) => void
+  onDelete?: (id: string) => void
 }) {
   return (
     <div className="rounded-2xl bg-white p-4 shadow-soft">
@@ -43,15 +45,24 @@ export default function OrderCard({
       {order.note && <div className="mt-2 text-xs text-terracotta">备注：{order.note}</div>}
       <div className="mt-3 flex flex-wrap gap-2">
         {customer ? (
-          (order.status === 'pending' || order.status === 'preparing') &&
-          onShare && (
-            <button
-              onClick={() => onShare(order)}
-              className="rounded-full bg-terracotta px-3 py-1.5 text-xs text-white"
-            >
-              催一下小言
-            </button>
-          )
+          <>
+            {(order.status === 'pending' || order.status === 'preparing') && onShare && (
+              <button
+                onClick={() => onShare(order)}
+                className="rounded-full bg-terracotta px-3 py-1.5 text-xs text-white"
+              >
+                催一下小言
+              </button>
+            )}
+            {order.status === 'done' && onDelete && (
+              <button
+                onClick={() => onDelete(order.id)}
+                className="rounded-full bg-gray-200 px-3 py-1.5 text-xs text-gray-600"
+              >
+                删除订单
+              </button>
+            )}
+          </>
         ) : (
           <>
             {order.status === 'pending' && (
@@ -76,6 +87,14 @@ export default function OrderCard({
                 className="rounded-full bg-gray-300 px-3 py-1 text-xs text-gray-700"
               >
                 取消
+              </button>
+            )}
+            {order.status === 'done' && onDelete && (
+              <button
+                onClick={() => onDelete(order.id)}
+                className="rounded-full bg-gray-300 px-3 py-1 text-xs text-gray-700"
+              >
+                删除
               </button>
             )}
           </>

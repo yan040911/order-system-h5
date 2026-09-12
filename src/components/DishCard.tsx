@@ -12,11 +12,7 @@ export default function DishCard({
   return (
     <div className="flex gap-3 rounded-2xl bg-white p-3 shadow-soft">
       <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-warm flex items-center justify-center text-3xl">
-        {dish.image_url ? (
-          <img src={dish.image_url} alt={dish.name} className="h-full w-full object-cover" />
-        ) : (
-          '🍽️'
-        )}
+        {dish.image_url ? dish.image_url : '🍽️'}
       </div>
       <div className="flex flex-1 flex-col">
         <div className="font-semibold text-ink">{dish.name}</div>

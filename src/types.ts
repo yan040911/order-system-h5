@@ -13,6 +13,7 @@ export interface Dish {
   description: string
   price: number
   tags: string[]
+  // 注：image_url 列现用作「emoji 图标」存储（家庭版无需真实图片地址）
   image_url: string
   status: 'on' | 'off'
   sort: number

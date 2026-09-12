@@ -92,3 +92,6 @@ select c.id, '宫保鸡丁', '经典川菜，花生配鸡丁', 38, array['招牌
 from categories c
 where c.name = '热菜'
   and not exists (select 1 from dishes where name = '宫保鸡丁');
+
+-- 说明：菜品图标统一用 emoji 存储，直接写入 dishes 表的 image_url 列（文本字段），
+--       不再使用真实图片地址。管理端「Emoji 图标」输入框即对应此列。

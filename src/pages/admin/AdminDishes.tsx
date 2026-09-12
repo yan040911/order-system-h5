@@ -14,6 +14,14 @@ interface FormState {
   status: 'on' | 'off'
 }
 
+// 常用菜品 emoji 快捷选择
+const EMOJI_CHOICES = [
+  '🍚', '🍜', '🍲', '🥘', '🍛', '🍱',
+  '🍤', '🍗', '🥟', '🍔', '🍕', '🌮',
+  '🥗', '🍳', '🥪', '🍰', '🍎', '🍇',
+  '🥤', '🍵', '☕', '🍺', '🍻', '🍦',
+]
+
 const inputCls =
   'w-full rounded-xl border border-warm bg-white px-3 py-2 text-sm outline-none focus:border-accent'
 
@@ -66,7 +74,7 @@ export default function AdminDishes() {
       description: d.description,
       price: String(d.price),
       tags: (d.tags || []).join(','),
-      image_url: d.image_url,
+      image_url: d.image_url || '',
       status: d.status,
     })
 
@@ -81,7 +89,7 @@ export default function AdminDishes() {
         .split(',')
         .map((t) => t.trim())
         .filter(Boolean),
-      image_url: editing.image_url,
+      image_url: editing.image_url.trim(),
       status: editing.status,
     }
     if (editing.id) {
@@ -115,12 +123,8 @@ export default function AdminDishes() {
         ) : (
           dishes.map((d) => (
             <div key={d.id} className="flex items-center gap-3 rounded-2xl bg-white p-3 shadow-soft">
-              <div className="h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-warm flex items-center justify-center">
-                {d.image_url ? (
-                  <img src={d.image_url} alt={d.name} className="h-full w-full object-cover" />
-                ) : (
-                  '🍽️'
-                )}
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-warm text-2xl">
+                {d.image_url ? d.image_url : '🍽️'}
               </div>
               <div className="flex-1">
                 <div className="font-medium text-ink">
@@ -190,12 +194,26 @@ export default function AdminDishes() {
                 className={inputCls}
               />
             </Field>
-            <Field label="图片 URL">
+            <Field label="Emoji 图标（作为菜品图标，存于 image_url 列）">
               <input
                 value={editing.image_url}
                 onChange={(e) => setEditing({ ...editing, image_url: e.target.value })}
-                className={inputCls}
+                placeholder="例如 🍲"
+                className={`${inputCls} text-2xl`}
               />
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {EMOJI_CHOICES.map((e) => (
+                  <button
+                    key={e}
+                    type="button"
+                    onClick={() => setEditing({ ...editing, image_url: e })}
+                    className="flex h-9 w-9 items-center justify-center rounded-lg bg-white text-xl shadow-soft transition active:scale-95"
+                  >
+                    {e}
+                  </button>
+                ))}
+              </div>
+              <div className="mt-1 text-[11px] text-muted">点选或手动输入/粘贴一个 emoji 即可</div>
             </Field>
             <Field label="状态">
               <select

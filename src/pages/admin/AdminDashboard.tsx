@@ -55,6 +55,22 @@ export default function AdminDashboard() {
     setOrders((prev) => prev.map((o) => (o.id === id ? { ...o, status } : o)))
   }
 
+  const onDelete = async (id: string) => {
+    if (!supabase) return
+    if (!confirm('确定删除该已完成订单？会同步删除云端数据。')) return
+    await supabase.from('orders').delete().eq('id', id)
+    setOrders((prev) => prev.filter((o) => o.id !== id))
+  }
+
+  const clearDone = async () => {
+    if (!supabase) return
+    const doneOrders = orders.filter((o) => o.status === 'done')
+    if (doneOrders.length === 0) return
+    if (!confirm(`确定清空 ${doneOrders.length} 条已完成订单？会同步删除云端数据。`)) return
+    await supabase.from('orders').delete().eq('status', 'done')
+    setOrders((prev) => prev.filter((o) => o.status !== 'done'))
+  }
+
   const shown = filter === 'all' ? orders : orders.filter((o) => o.status === filter)
 
   return (
@@ -62,9 +78,17 @@ export default function AdminDashboard() {
       <AdminNav />
       <div className="flex items-center justify-between px-5 pb-1 pt-4">
         <div className="text-xl font-bold text-terracotta">📡 实时订单</div>
-        <Link to="/admin/dishes" className="text-sm text-accent">
-          菜品管理 →
-        </Link>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={clearDone}
+            className="text-sm text-gray-400 transition hover:text-red-400"
+          >
+            清空已完成
+          </button>
+          <Link to="/admin/dishes" className="text-sm text-accent">
+            菜品管理 →
+          </Link>
+        </div>
       </div>
       <div className="no-scrollbar flex gap-2 overflow-x-auto px-5 py-2">
         {FILTERS.map((f) => (
@@ -85,7 +109,7 @@ export default function AdminDashboard() {
         ) : shown.length === 0 ? (
           <div className="py-10 text-center text-muted">暂无订单</div>
         ) : (
-          shown.map((o) => <OrderCard key={o.id} order={o} onUpdate={onUpdate} />)
+          shown.map((o) => <OrderCard key={o.id} order={o} onUpdate={onUpdate} onDelete={onDelete} />)
         )}
       </div>
     </div>

@@ -20,3 +20,13 @@ export function getMyOrders(): string[] {
     return []
   }
 }
+
+/** 从本机记录中移除某个订单号（删除订单后调用，避免「我的订单」再次拉到它） */
+export function removeMyOrder(orderNo: string) {
+  const arr = getMyOrders().filter((n) => n !== orderNo)
+  try {
+    localStorage.setItem(KEY, JSON.stringify(arr))
+  } catch {
+    /* 忽略隐私模式下的写入失败 */
+  }
+}
