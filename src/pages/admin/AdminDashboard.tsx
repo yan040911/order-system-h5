@@ -19,9 +19,12 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (!supabase) return
+    // 通过上面的空值判断后 supabase 已被收窄为非空类型，
+    // 再存入局部常量 sb，闭包（load / 清理函数）里即可安全使用
+    const sb = supabase
     let alive = true
     const load = async () => {
-      const { data } = await supabase
+      const { data } = await sb
         .from('orders')
         .select('*')
         .order('created_at', { ascending: false })
@@ -33,13 +36,13 @@ export default function AdminDashboard() {
     }
     load()
     // 实时订阅：订单有变化自动刷新（无需轮询）
-    const ch = supabase
+    const ch = sb
       .channel('orders-realtime')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => load())
       .subscribe()
     return () => {
       alive = false
-      supabase.removeChannel(ch)
+      sb.removeChannel(ch)
     }
   }, [])
 

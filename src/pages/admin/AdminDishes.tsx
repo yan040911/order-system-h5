@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { supabase } from '../../lib/supabase'
 import type { Category, Dish } from '../../types'
+import AdminNav from './AdminNav'
 
 interface FormState {
   id?: string

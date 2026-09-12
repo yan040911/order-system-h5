@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
 import type { Category } from '../../types'
+import AdminNav from './AdminNav'
 
 export default function AdminCategories() {
   const [cats, setCats] = useState<Category[]>([])

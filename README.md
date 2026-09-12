@@ -29,11 +29,37 @@ npm run dev
 ```
 
 ## 二、部署（免费，推荐 GitHub Pages）
+
+### 方案 A：GitHub Actions 自动部署（推荐，push 即上线）
+工程已内置 `.github/workflows/deploy.yml`，push 到 GitHub 后会**自动构建并发布**，你以后改完代码只需再 push 一次。
+
+**① 在 GitHub 新建一个空仓库**（不要勾选 README/.gitignore，保持空）。
+**② 在本机终端把代码推上去**（仓库地址换成你自己的）：
 ```bash
+cd ~/Desktop/小鱼家的点餐系统-H5
+git remote add origin https://github.com/你的用户名/你的仓库名.git
+git branch -M main
+git push -u origin main
+```
+**③ 配置仓库 Secrets**（构建时需要，路径：仓库 Settings → Secrets and variables → Actions → New repository secret）：
+| Name | Secret 值 |
+|---|---|
+| `VITE_SUPABASE_URL` | `https://utbxzruvoqyjfytinkgl.supabase.co` |
+| `VITE_SUPABASE_ANON_KEY` | `sb_publishable_LVtugK0q_In4KwYQURC_rg_ecExQpTO` |
+| `VITE_ADMIN_PWD` | `xiaoyu2026` |
+
+**④ 开启 Pages**：仓库 Settings → Pages → Source 选 **GitHub Actions**。
+**⑤ 等 1~2 分钟**，Actions 跑完即可在 `https://你的用户名.github.io/你的仓库名/` 打开。
+
+> 因为是普通网页（非小程序），**不需要 ICP 备案、不需要微信审核**。
+
+### 方案 B：手动构建后上传（无需 git）
+```bash
+npm install
 npm run build          # 产物在 dist/，资源用相对路径，可直接托管
 ```
-把 `dist/` 上传到 GitHub Pages / 任意静态托管即可。手机浏览器打开链接，或「添加到主屏幕」当 App 用。
-> 因为是普通网页（非小程序），**不需要 ICP 备案、不需要微信审核**。
+把 `dist/` 文件夹拖到 Netlify Drop（app.netlify.com/drop）或上传到任意静态托管即可。
+> 注意：手动方案需要在 `.env.local` 里先填好 Supabase 配置再 build，否则页面读不到后端。
 
 ## 三、Supabase 配置要点
 - 建表/权限/Realtime 都在 `supabase/schema.sql` 里，一条 SQL 跑完即可。
