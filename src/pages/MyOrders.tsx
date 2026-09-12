@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase, isConfigured } from '../lib/supabase'
 import type { Order } from '../types'
-import { getMyOrders, removeMyOrder } from '../lib/myOrders'
+import { getMyOrders } from '../lib/myOrders'
 import Header from '../components/Header'
 import OrderCard from '../components/OrderCard'
 import BottomNav from '../components/BottomNav'
@@ -72,16 +72,6 @@ export default function MyOrders() {
     setShareOrder(null)
   }
 
-  // 删除已完成订单：同步删除云端数据，并清掉本机记录
-  const handleDelete = async (id: string) => {
-    if (!supabase) return
-    if (!confirm('确定删除该订单？会同步删除云端数据，此操作不可恢复。')) return
-    const target = orders.find((o) => o.id === id)
-    await supabase.from('orders').delete().eq('id', id)
-    if (target) removeMyOrder(target.order_no)
-    setOrders((prev) => prev.filter((o) => o.id !== id))
-  }
-
   return (
     <div className="flex min-h-full flex-col">
       <Header title="我的订单" subtitle="查看已点餐品状态" />
@@ -99,7 +89,7 @@ export default function MyOrders() {
         ) : (
           <div className="space-y-3">
             {orders.map((o) => (
-              <OrderCard key={o.id} order={o} customer onShare={setShareOrder} onDelete={handleDelete} />
+              <OrderCard key={o.id} order={o} customer onShare={setShareOrder} />
             ))}
           </div>
         )}

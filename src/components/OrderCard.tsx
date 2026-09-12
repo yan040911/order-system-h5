@@ -54,14 +54,6 @@ export default function OrderCard({
                 催一下小言
               </button>
             )}
-            {order.status === 'done' && onDelete && (
-              <button
-                onClick={() => onDelete(order.id)}
-                className="rounded-full bg-gray-200 px-3 py-1.5 text-xs text-gray-600"
-              >
-                删除订单
-              </button>
-            )}
           </>
         ) : (
           <>
@@ -89,7 +81,7 @@ export default function OrderCard({
                 取消
               </button>
             )}
-            {order.status === 'done' && onDelete && (
+            {(order.status === 'done' || order.status === 'cancelled') && onDelete && (
               <button
                 onClick={() => onDelete(order.id)}
                 className="rounded-full bg-gray-300 px-3 py-1 text-xs text-gray-700"

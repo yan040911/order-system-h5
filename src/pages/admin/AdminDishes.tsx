@@ -8,7 +8,6 @@ interface FormState {
   name: string
   category_id: string
   description: string
-  price: string
   tags: string
   image_url: string
   status: 'on' | 'off'
@@ -60,7 +59,6 @@ export default function AdminDishes() {
       name: '',
       category_id: cats[0]?.id || '',
       description: '',
-      price: '',
       tags: '',
       image_url: '',
       status: 'on',
@@ -72,7 +70,6 @@ export default function AdminDishes() {
       name: d.name,
       category_id: d.category_id,
       description: d.description,
-      price: String(d.price),
       tags: (d.tags || []).join(','),
       image_url: d.image_url || '',
       status: d.status,
@@ -84,7 +81,6 @@ export default function AdminDishes() {
       name: editing.name,
       category_id: editing.category_id,
       description: editing.description,
-      price: Number(editing.price) || 0,
       tags: editing.tags
         .split(',')
         .map((t) => t.trim())
@@ -127,9 +123,7 @@ export default function AdminDishes() {
                 {d.image_url ? d.image_url : '🍽️'}
               </div>
               <div className="flex-1">
-                <div className="font-medium text-ink">
-                  {d.name} <span className="text-xs text-muted">¥{d.price}</span>
-                </div>
+                <div className="font-medium text-ink">{d.name}</div>
                 <div className="text-xs text-muted">{d.status === 'on' ? '在售' : '下架'}</div>
               </div>
               <button onClick={() => openEdit(d)} className="text-sm text-accent">
@@ -171,14 +165,6 @@ export default function AdminDishes() {
                   </option>
                 ))}
               </select>
-            </Field>
-            <Field label="价格（仅管理端可见，顾客端不显示）">
-              <input
-                value={editing.price}
-                inputMode="decimal"
-                onChange={(e) => setEditing({ ...editing, price: e.target.value })}
-                className={inputCls}
-              />
             </Field>
             <Field label="简介">
               <input

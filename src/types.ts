@@ -11,7 +11,6 @@ export interface Dish {
   category_id: string
   name: string
   description: string
-  price: number
   tags: string[]
   // 注：image_url 列现用作「emoji 图标」存储（家庭版无需真实图片地址）
   image_url: string
@@ -36,7 +35,6 @@ export interface Order {
   status: OrderStatus
   table_no: string
   note: string
-  total: number
   created_at: string
   updated_at: string
 }

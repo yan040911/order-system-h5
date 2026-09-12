@@ -35,7 +35,6 @@ export default function CheckoutSheet({
         items,
         status: 'pending',
         note: globalNote.trim(),
-        total: 0,
       })
       .select('order_no')
       .single()
