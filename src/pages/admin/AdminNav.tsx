@@ -8,6 +8,9 @@ export default function AdminNav() {
   }
   return (
     <div className="flex items-center gap-2 border-b border-warm bg-white/90 px-3 py-2 text-xs">
+      <Link to="/" className="rounded-full bg-accent px-3 py-1 text-white">
+        点餐
+      </Link>
       <Link to="/admin/dashboard" className="rounded-full bg-warm px-3 py-1 text-ink">
         看板
       </Link>

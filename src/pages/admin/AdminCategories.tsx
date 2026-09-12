@@ -37,6 +37,16 @@ export default function AdminCategories() {
     load()
   }
 
+  const rename = async (c: Category) => {
+    if (!supabase) return
+    const newName = prompt('输入新的分类名称', c.name)
+    if (newName == null || !newName.trim()) return
+    const newIcon = prompt('输入新的图标 emoji（可留空保持原图标）', c.icon)
+    const iconVal = (newIcon == null ? c.icon : newIcon.trim()) || c.icon
+    await supabase.from('categories').update({ name: newName.trim(), icon: iconVal }).eq('id', c.id)
+    load()
+  }
+
   return (
     <div className="flex min-h-full flex-col">
       <AdminNav />
@@ -53,9 +63,14 @@ export default function AdminCategories() {
               <div className="text-ink">
                 {c.icon} {c.name}
               </div>
-              <button onClick={() => del(c.id)} className="text-sm text-red-400">
-                删除
-              </button>
+              <div className="flex items-center gap-3">
+                <button onClick={() => rename(c)} className="text-sm text-accent">
+                  改名
+                </button>
+                <button onClick={() => del(c.id)} className="text-sm text-red-400">
+                  删除
+                </button>
+              </div>
             </div>
           ))
         )}

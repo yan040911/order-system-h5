@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase, isConfigured } from '../lib/supabase'
-import type { Order, OrderStatus } from '../types'
+import type { Order } from '../types'
 import { getMyOrders } from '../lib/myOrders'
 import Header from '../components/Header'
 import OrderCard from '../components/OrderCard'
 import BottomNav from '../components/BottomNav'
 import ConfigMissing from '../components/ConfigMissing'
 
+const SITE_URL = 'https://yan040911.github.io/order-system-h5/'
+
 export default function MyOrders() {
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
+  const [shareOrder, setShareOrder] = useState<Order | null>(null)
   const nos = getMyOrders()
 
   useEffect(() => {
@@ -46,13 +49,27 @@ export default function MyOrders() {
     )
   }
 
-  const onUpdate = async (id: string, status: OrderStatus) => {
-    if (!supabase) return
-    await supabase
-      .from('orders')
-      .update({ status, updated_at: new Date().toISOString() })
-      .eq('id', id)
-    setOrders((prev) => prev.map((o) => (o.id === id ? { ...o, status } : o)))
+  const buildShareText = (o: Order) => {
+    const items = o.items
+      .map((it) => `${it.name} × ${it.qty}${it.note ? `（${it.note}）` : ''}`)
+      .join('、')
+    return `【小鱼家点餐 · 催一下小言】\n订单号：${o.order_no}\n菜品：${items}\n状态：${o.status === 'preparing' ? '制作中' : '待制作'}\n麻烦尽快出餐哦～🍳\n${SITE_URL}`
+  }
+
+  // 真正执行分享（点击弹窗里的"分享到微信/其他应用"时调用）
+  const doShare = async (o: Order) => {
+    const text = buildShareText(o)
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: '催一下小言', text })
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(text)
+        alert('已复制催单文字，去粘贴给厨房吧～')
+      }
+    } catch {
+      /* 用户取消分享，忽略 */
+    }
+    setShareOrder(null)
   }
 
   return (
@@ -72,11 +89,49 @@ export default function MyOrders() {
         ) : (
           <div className="space-y-3">
             {orders.map((o) => (
-              <OrderCard key={o.id} order={o} onUpdate={onUpdate} />
+              <OrderCard key={o.id} order={o} customer onShare={setShareOrder} />
             ))}
           </div>
         )}
       </div>
+
+      {/* 催一下小言 · 分享页 */}
+      {shareOrder && (
+        <div
+          className="fixed inset-0 z-40 flex items-end bg-black/40"
+          onClick={() => setShareOrder(null)}
+        >
+          <div
+            className="mx-auto w-full max-w-md rounded-t-3xl bg-cream p-5 pb-safe"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-3 flex items-center justify-between">
+              <div className="text-lg font-bold text-terracotta">催一下小言 🍳</div>
+              <button onClick={() => setShareOrder(null)} className="text-muted">
+                ✕
+              </button>
+            </div>
+            <pre className="mb-4 whitespace-pre-wrap rounded-2xl bg-white p-3 text-xs leading-relaxed text-ink">
+              {buildShareText(shareOrder)}
+            </pre>
+            <div className="flex gap-2">
+              <button
+                onClick={() => doShare(shareOrder)}
+                className="flex-1 rounded-full bg-terracotta py-3 font-medium text-white"
+              >
+                分享到微信 / 其他应用
+              </button>
+              <button
+                onClick={() => setShareOrder(null)}
+                className="rounded-full bg-warm px-4 py-3 text-ink"
+              >
+                关闭
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <BottomNav />
     </div>
   )

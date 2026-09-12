@@ -11,9 +11,13 @@ const STATUS_COLOR: Record<OrderStatus, string> = {
 export default function OrderCard({
   order,
   onUpdate,
+  customer,
+  onShare,
 }: {
   order: Order
-  onUpdate: (id: string, status: OrderStatus) => void
+  onUpdate?: (id: string, status: OrderStatus) => void
+  customer?: boolean
+  onShare?: (order: Order) => void
 }) {
   return (
     <div className="rounded-2xl bg-white p-4 shadow-soft">
@@ -24,7 +28,7 @@ export default function OrderCard({
         </span>
       </div>
       <div className="mt-1 text-xs text-muted">
-        桌号 {order.table_no || '—'} · {new Date(order.created_at).toLocaleTimeString('zh-CN')}
+        {new Date(order.created_at).toLocaleTimeString('zh-CN')}
       </div>
       <div className="mt-2 space-y-1">
         {order.items.map((it, i) => (
@@ -38,29 +42,43 @@ export default function OrderCard({
       </div>
       {order.note && <div className="mt-2 text-xs text-terracotta">备注：{order.note}</div>}
       <div className="mt-3 flex flex-wrap gap-2">
-        {order.status === 'pending' && (
-          <button
-            onClick={() => onUpdate(order.id, 'preparing')}
-            className="rounded-full bg-blue-500 px-3 py-1 text-xs text-white"
-          >
-            开始制作
-          </button>
-        )}
-        {order.status === 'preparing' && (
-          <button
-            onClick={() => onUpdate(order.id, 'done')}
-            className="rounded-full bg-green-500 px-3 py-1 text-xs text-white"
-          >
-            完成出餐
-          </button>
-        )}
-        {order.status !== 'cancelled' && order.status !== 'done' && (
-          <button
-            onClick={() => onUpdate(order.id, 'cancelled')}
-            className="rounded-full bg-gray-300 px-3 py-1 text-xs text-gray-700"
-          >
-            取消
-          </button>
+        {customer ? (
+          (order.status === 'pending' || order.status === 'preparing') &&
+          onShare && (
+            <button
+              onClick={() => onShare(order)}
+              className="rounded-full bg-terracotta px-3 py-1.5 text-xs text-white"
+            >
+              催一下小言
+            </button>
+          )
+        ) : (
+          <>
+            {order.status === 'pending' && (
+              <button
+                onClick={() => onUpdate?.(order.id, 'preparing')}
+                className="rounded-full bg-blue-500 px-3 py-1 text-xs text-white"
+              >
+                开始制作
+              </button>
+            )}
+            {order.status === 'preparing' && (
+              <button
+                onClick={() => onUpdate?.(order.id, 'done')}
+                className="rounded-full bg-green-500 px-3 py-1 text-xs text-white"
+              >
+                完成出餐
+              </button>
+            )}
+            {order.status !== 'cancelled' && order.status !== 'done' && (
+              <button
+                onClick={() => onUpdate?.(order.id, 'cancelled')}
+                className="rounded-full bg-gray-300 px-3 py-1 text-xs text-gray-700"
+              >
+                取消
+              </button>
+            )}
+          </>
         )}
       </div>
     </div>

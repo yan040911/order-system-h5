@@ -11,4 +11,4 @@ export const supabase: SupabaseClient | null = isConfigured
   : null
 
 /** 管理端登录密码（环境变量优先，缺省回退到默认） */
-export const ADMIN_PWD = import.meta.env.VITE_ADMIN_PWD || 'xiaoyu2026'
+export const ADMIN_PWD = import.meta.env.VITE_ADMIN_PWD || '03050911'

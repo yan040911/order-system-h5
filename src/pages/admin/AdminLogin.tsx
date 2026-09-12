@@ -42,7 +42,7 @@ export default function AdminLogin() {
             进入
           </button>
           <div className="mt-3 text-center text-xs text-muted">
-            默认密码 xiaoyu2026（可在 .env.local 的 VITE_ADMIN_PWD 修改）
+            管理密码 03050911（可在 .env.local 的 VITE_ADMIN_PWD 修改）
           </div>
         </div>
       </div>

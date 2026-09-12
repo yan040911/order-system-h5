@@ -12,7 +12,6 @@ export default function CheckoutSheet({
   onClose: () => void
 }) {
   const { lines, setQty, setNote, clear, count } = useCart()
-  const [tableNo, setTableNo] = useState('')
   const [globalNote, setGlobalNote] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
@@ -35,7 +34,6 @@ export default function CheckoutSheet({
         order_no,
         items,
         status: 'pending',
-        table_no: tableNo.trim(),
         note: globalNote.trim(),
         total: 0,
       })
@@ -71,7 +69,7 @@ export default function CheckoutSheet({
           <>
             <div className="space-y-3">
               {lines.map((l) => (
-                <div key={l.dish.id + l.note} className="rounded-2xl bg-white p-3 shadow-soft">
+                <div key={l.dish.id} className="rounded-2xl bg-white p-3 shadow-soft">
                   <div className="flex items-center justify-between">
                     <div className="font-medium text-ink">{l.dish.name}</div>
                     <div className="flex items-center gap-2">
@@ -100,14 +98,6 @@ export default function CheckoutSheet({
               ))}
             </div>
             <div className="mt-3">
-              <input
-                value={tableNo}
-                onChange={(e) => setTableNo(e.target.value)}
-                placeholder="桌号 / 称呼（如 A1、客厅）"
-                className="w-full rounded-xl border border-warm bg-white px-3 py-2 text-sm outline-none focus:border-accent"
-              />
-            </div>
-            <div className="mt-2">
               <input
                 value={globalNote}
                 onChange={(e) => setGlobalNote(e.target.value)}
