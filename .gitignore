@@ -1,10 +1,22 @@
-node_modules
-dist
-.env.local
-.env
-*.local
-.DS_Store
-vite.config.ts.timestamp-*.mjs
-dist/
+# dependencies
 node_modules/
+
+# build
+dist/
+.vite/
+
+# vite build sibling temp files
+src/*.timestamp-*.mjs
+src/[A-Z0-9]*
+
+# env
 .env.local
+.env.*.local
+
+# editor
+.DS_Store
+.idea/
+.vscode/
+
+# logs
+*.log
