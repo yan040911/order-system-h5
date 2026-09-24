@@ -107,7 +107,7 @@ export default function ReviewForm({
         <div className="mb-4 rounded-2xl bg-white p-4 shadow-soft">
           <div className="mb-2 flex items-center justify-between">
             <div className="font-medium text-ink">菜品满意度</div>
-            <div className="text-xs text-muted">{dish} / 5</div>
+            <div className="text-xs text-muted">{dish.toFixed(1)} / 5</div>
           </div>
           <StarRating value={dish} onChange={setDish} size={28} />
         </div>
@@ -115,7 +115,7 @@ export default function ReviewForm({
         <div className="mb-4 rounded-2xl bg-white p-4 shadow-soft">
           <div className="mb-2 flex items-center justify-between">
             <div className="font-medium text-ink">服务满意度</div>
-            <div className="text-xs text-muted">{service} / 5</div>
+            <div className="text-xs text-muted">{service.toFixed(1)} / 5</div>
           </div>
           <StarRating value={service} onChange={setService} size={28} />
         </div>

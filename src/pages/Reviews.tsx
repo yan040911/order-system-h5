@@ -57,14 +57,14 @@ export default function Reviews() {
                   <span className="text-[11px] text-muted">菜品</span>
                   <StarRating value={rv.dish_rating} readOnly size={12} />
                   <span className="ml-auto text-xs font-bold text-ink">
-                    {rv.dish_rating}
+                    {Number(rv.dish_rating).toFixed(1)}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 rounded-xl bg-warm/40 px-2 py-1.5">
                   <span className="text-[11px] text-muted">服务</span>
                   <StarRating value={rv.service_rating} readOnly size={12} />
                   <span className="ml-auto text-xs font-bold text-ink">
-                    {rv.service_rating}
+                    {Number(rv.service_rating).toFixed(1)}
                   </span>
                 </div>
               </div>
