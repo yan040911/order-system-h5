@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom'
 import { supabase, isConfigured } from '../lib/supabase'
 import type { Order } from '../types'
 import { getMyOrders } from '../lib/myOrders'
+import { useReviewByOrderId } from '../lib/reviews'
 import Header from '../components/Header'
 import OrderCard from '../components/OrderCard'
+import ReviewForm from '../components/ReviewForm'
 import BottomNav from '../components/BottomNav'
 import ConfigMissing from '../components/ConfigMissing'
 
@@ -14,6 +16,7 @@ export default function MyOrders() {
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
   const [shareOrder, setShareOrder] = useState<Order | null>(null)
+  const [reviewOrder, setReviewOrder] = useState<Order | null>(null)
   const nos = getMyOrders()
 
   useEffect(() => {
@@ -56,7 +59,6 @@ export default function MyOrders() {
     return `【小鱼家点餐 · 催一下小言】\n订单号：${o.order_no}\n菜品：${items}\n状态：${o.status === 'preparing' ? '制作中' : '待制作'}\n麻烦尽快出餐哦～🍳\n${SITE_URL}`
   }
 
-  // 真正执行分享（点击弹窗里的"分享到微信/其他应用"时调用）
   const doShare = async (o: Order) => {
     const text = buildShareText(o)
     try {
@@ -89,7 +91,13 @@ export default function MyOrders() {
         ) : (
           <div className="space-y-3">
             {orders.map((o) => (
-              <OrderCard key={o.id} order={o} customer onShare={setShareOrder} />
+              <OrderCard
+                key={o.id}
+                order={o}
+                customer
+                onShare={setShareOrder}
+                onReview={setReviewOrder}
+              />
             ))}
           </div>
         )}
@@ -132,7 +140,39 @@ export default function MyOrders() {
         </div>
       )}
 
+      {/* 评价弹窗：拉取本订单已存在的评价（如有）回填 */}
+      {reviewOrder && (
+        <ReviewModal
+          order={reviewOrder}
+          open={!!reviewOrder}
+          onClose={() => setReviewOrder(null)}
+        />
+      )}
+
       <BottomNav />
     </div>
+  )
+}
+
+/** 把评价弹窗与「拉取该订单已有评价」组合在一起 */
+function ReviewModal({
+  order,
+  open,
+  onClose,
+}: {
+  order: Order
+  open: boolean
+  onClose: () => void
+}) {
+  const { review } = useReviewByOrderId(open ? order.id : null)
+  return (
+    <ReviewForm
+      open={open}
+      orderId={order.id}
+      orderNo={order.order_no}
+      items={order.items}
+      existing={review}
+      onClose={onClose}
+    />
   )
 }

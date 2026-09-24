@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { CartProvider } from './context/CartContext'
 import CustomerMenu from './pages/CustomerMenu'
 import MyOrders from './pages/MyOrders'
+import Reviews from './pages/Reviews'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminDishes from './pages/admin/AdminDishes'
@@ -15,6 +16,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<CustomerMenu />} />
           <Route path="/orders" element={<MyOrders />} />
+          <Route path="/reviews" element={<Reviews />} />
           <Route path="/admin" element={<AdminLogin />} />
           <Route
             path="/admin/dashboard"

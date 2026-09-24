@@ -21,6 +21,7 @@ export default function BottomNav() {
     <nav className="sticky bottom-0 z-10 mt-auto flex border-t border-warm bg-white/90 backdrop-blur">
       {item('/', '🍽️', '点餐')}
       {item('/orders', '📋', '我的订单')}
+      {item('/reviews', '⭐', '评价')}
       {item('/admin', '⚙️', '管理')}
     </nav>
   )

@@ -14,12 +14,15 @@ export default function OrderCard({
   customer,
   onShare,
   onDelete,
+  onReview,
 }: {
   order: Order
   onUpdate?: (id: string, status: OrderStatus) => void
   customer?: boolean
   onShare?: (order: Order) => void
   onDelete?: (id: string) => void
+  /** 顾客侧点了「去评价」时触发（仅适用于已出餐订单） */
+  onReview?: (order: Order) => void
 }) {
   return (
     <div className="rounded-2xl bg-white p-4 shadow-soft">
@@ -52,6 +55,14 @@ export default function OrderCard({
                 className="rounded-full bg-terracotta px-3 py-1.5 text-xs text-white"
               >
                 催一下小言
+              </button>
+            )}
+            {order.status === 'done' && onReview && (
+              <button
+                onClick={() => onReview(order)}
+                className="rounded-full bg-accent px-3 py-1.5 text-xs text-white"
+              >
+                ⭐ 去评价
               </button>
             )}
           </>
