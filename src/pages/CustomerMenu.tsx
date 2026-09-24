@@ -41,7 +41,7 @@ export default function CustomerMenu() {
 
   if (!isConfigured) {
     return (
-      <div className="flex min-h-full flex-col">
+      <div className="flex min-h-screen w-full flex-col">
         <Header />
         <ConfigMissing />
         <BottomNav />
@@ -52,7 +52,7 @@ export default function CustomerMenu() {
   const visible = dishes.filter((d) => d.category_id === active && d.status === 'on')
 
   return (
-    <div className="flex min-h-full flex-col">
+    <div className="flex min-h-screen w-full flex-col">
       <Header />
       {loading ? (
         <div className="px-5 py-10 text-center text-muted">菜单加载中…</div>

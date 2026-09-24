@@ -105,7 +105,7 @@ export default function AdminDishes() {
   }
 
   return (
-    <div className="flex min-h-full flex-col">
+    <div className="flex min-h-screen w-full flex-col">
       <AdminNav />
       <div className="flex items-center justify-between px-5 pb-1 pt-4">
         <div className="text-xl font-bold text-terracotta">🍳 菜品管理</div>

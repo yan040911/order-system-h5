@@ -44,7 +44,7 @@ export default function MyOrders() {
 
   if (!isConfigured) {
     return (
-      <div className="flex min-h-full flex-col">
+      <div className="flex min-h-screen w-full flex-col">
         <Header />
         <ConfigMissing />
         <BottomNav />
@@ -75,7 +75,7 @@ export default function MyOrders() {
   }
 
   return (
-    <div className="flex min-h-full flex-col">
+    <div className="flex min-h-screen w-full flex-col">
       <Header title="我的订单" subtitle="查看已点餐品状态" />
       <div className="flex-1 px-5 pb-24 pt-2">
         {loading ? (

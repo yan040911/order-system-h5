@@ -21,7 +21,7 @@ export default function Reviews() {
   const { reviews, loading } = useReviews()
   if (!isConfigured) {
     return (
-      <div className="flex min-h-full flex-col">
+      <div className="flex min-h-screen w-full flex-col">
         <Header />
         <ConfigMissing />
         <BottomNav />
@@ -29,7 +29,7 @@ export default function Reviews() {
     )
   }
   return (
-    <div className="flex min-h-full flex-col">
+    <div className="flex min-h-screen w-full flex-col">
       <Header title="大家怎么说" subtitle="顾客真实评价" />
       <div className="flex-1 space-y-3 px-5 pb-24 pt-2">
         <ShopRatingPanel />

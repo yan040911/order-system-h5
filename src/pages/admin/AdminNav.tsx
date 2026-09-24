@@ -8,8 +8,12 @@ export default function AdminNav() {
   }
   return (
     <div className="flex items-center gap-2 border-b border-warm bg-white/90 px-3 py-2 text-xs">
-      <Link to="/" className="rounded-full bg-accent px-3 py-1 text-white">
-        返回点餐
+      {/* 显眼的主页跳转按钮 */}
+      <Link
+        to="/"
+        className="rounded-full bg-accent px-3 py-1 font-medium text-white shadow-sm active:scale-95"
+      >
+        ← 返回主页
       </Link>
       <Link to="/admin/dashboard" className="rounded-full bg-warm px-3 py-1 text-ink">
         看板

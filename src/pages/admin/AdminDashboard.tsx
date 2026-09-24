@@ -66,7 +66,7 @@ export default function AdminDashboard() {
   const shown = filter === 'all' ? orders : orders.filter((o) => o.status === filter)
 
   return (
-    <div className="flex min-h-full flex-col">
+    <div className="flex min-h-screen w-full flex-col">
       <AdminNav />
       <div className="flex items-center justify-between px-5 pb-1 pt-4">
         <div className="text-xl font-bold text-terracotta">📡 实时订单</div>

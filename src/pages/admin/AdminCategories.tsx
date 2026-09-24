@@ -48,7 +48,7 @@ export default function AdminCategories() {
   }
 
   return (
-    <div className="flex min-h-full flex-col">
+    <div className="flex min-h-screen w-full flex-col">
       <AdminNav />
       <div className="px-5 pb-1 pt-4 text-xl font-bold text-terracotta">📂 分类管理</div>
       <div className="flex-1 space-y-2 px-5 pb-10 pt-2">
